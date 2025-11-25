@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environments
+.env
+venv/
+env/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Experiment Logs & Results (We don't want to track these in git history usually)
+experiment_logs.txt
+final_results.json
+qualitative_analysis.txt
+
+# ConceptNet Cache (Let the friend build it on their server)
+conceptnet_cache.json
+conceptnet_cache_full.json
