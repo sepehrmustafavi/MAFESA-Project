@@ -1,20 +1,20 @@
-import logging
+import gc
 import sys
+import time
 import json
 import torch
-import time
-import gc
+import logging
 import numpy as np
 from tqdm import tqdm
 from torch.optim import AdamW
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
-from config import Config
-from knowledge_modules import SymbolicModuleSenticNet, ConceptNetModule
-from model_architectures import NeuroSymbolicEncoder, NeuroSymbolicCausalLM, apply_tada
-from data_loader import get_dataloaders
-from xai_engine import XAIEngine
+from utils.config import Config
+from utils.knowledge_modules import SymbolicModuleSenticNet, ConceptNetModule
+from utils.model_architectures import NeuroSymbolicEncoder, NeuroSymbolicCausalLM, apply_tada
+from utils.data_loader import get_dataloaders
+from utils.xai_engine import XAIEngine
 
 # 1. Setup Logging
 logging.basicConfig(

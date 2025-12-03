@@ -1,7 +1,7 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
-from datasets import load_dataset
 import logging
+from datasets import load_dataset
+from torch.utils.data import Dataset, DataLoader
 
 class NeuroSymbolicDataset(Dataset):
     def __init__(self, dataset_name, data_split, tokenizer, max_len, sym_module, knowledge_type):

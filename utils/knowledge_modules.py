@@ -1,12 +1,12 @@
-import json
 import os
 import re
-import numpy as np
-import requests
 import nltk
+import json
+import logging
+import requests
+import numpy as np
 from nltk.corpus import stopwords
 from senticnet.senticnet import SenticNet
-import logging
 
 # Download NLTK resources quietly
 try:

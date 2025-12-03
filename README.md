@@ -10,6 +10,9 @@ This repository contains the implementation of the "Adaptive Neuro-Symbolic Fram
 
 ## Installation
 1. Clone the repository.
-2. Install dependencies:
+2. Create the conda environment (Python 3.11)
+   ```bash
+   conda create --name MAFESA python=3.11
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt

@@ -1,8 +1,8 @@
 import torch
-import torch.nn.functional as F
-import numpy as np
-from sentence_transformers import SentenceTransformer, util
 import logging
+import numpy as np
+import torch.nn.functional as F
+from sentence_transformers import SentenceTransformer, util
 
 class XAIEngine:
     def __init__(self, device):
