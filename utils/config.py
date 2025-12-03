@@ -1,29 +1,42 @@
 import torch
 
 class Config:
-    # General Settings
     PROJECT_NAME = "MAFESA_Experiment"
+    DATASET_NAME = "stanfordnlp/sst2"
     RANDOM_STATE = 42
-    DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # Paths
+    # Target GPU server
+    TARGET_GPU_ID = 7
+    
+    # Logic to select the specific GPU safely
+    if torch.cuda.is_available():
+        device_str = f"cuda:{TARGET_GPU_ID}"
+        try:
+            dummy = torch.tensor([1]).to(device_str)
+            DEVICE = torch.device(device_str)
+            print(f"--> Using GPU: {torch.cuda.get_device_name(DEVICE)} (ID: {TARGET_GPU_ID})")
+        except Exception as e:
+            print(f"Warning: GPU {TARGET_GPU_ID} not found or error occurred: {e}")
+            print("--> Switching to default cuda:0")
+            DEVICE = torch.device("cuda:0")
+    else:
+        DEVICE = torch.device("cpu")
+        print("--> Using CPU")
+    
     CACHE_PATH = "conceptnet_cache.json"
     LOG_FILE = "experiment_logs.txt"
     RESULTS_FILE = "final_results.json"
 
-    # Hyperparameters
-    BATCH_SIZE = 32      # Reduced to 32 to contain IMDB longer sequences in GPU memory
+    BATCH_SIZE = 32      
     EPOCHS = 4           
     LEARNING_RATE = 2e-5 
     
-    # Default Max Len (will be overridden for IMDB)
+    # Token Lengths
     MAX_LEN_SST2 = 128
     MAX_LEN_IMDB = 256   # IMDB reviews are longer
     
-    # Scenarios List 
-    # Format: (ID, Model, Arch, Strategy, Knowledge, DATASET_NAME)
     SCENARIOS = [
-        # --- SST-2 Experiments (The Main Study) ---
+        # --- SST-2 Experiments (Main Study) ---
         (1, "google-bert/bert-base-uncased", "bert", "static", "senticnet", "sst2"),
         (2, "google-bert/bert-base-uncased", "bert", "flexible", "senticnet", "sst2"),
         (3, "FacebookAI/roberta-base", "roberta", "static", "senticnet", "sst2"),
@@ -37,7 +50,6 @@ class Config:
         (11, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "conceptnet", "sst2"),
 
         # --- IMDB Experiments (Robustness Check) ---
-        # Testing the BEST model on a harder dataset
         (12, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "senticnet", "imdb"),
         (13, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "conceptnet", "imdb")
     ]

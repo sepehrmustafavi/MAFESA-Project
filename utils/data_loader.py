@@ -1,7 +1,7 @@
 import torch
-import logging
-from datasets import load_dataset
 from torch.utils.data import Dataset, DataLoader
+from datasets import load_dataset
+import logging
 
 class NeuroSymbolicDataset(Dataset):
     def __init__(self, dataset_name, data_split, tokenizer, max_len, sym_module, knowledge_type):
@@ -12,14 +12,15 @@ class NeuroSymbolicDataset(Dataset):
         self.needs_token_type = 'token_type_ids' in tokenizer.model_input_names
 
         # Handle different column names
-        if dataset_name == "sst2":
+        # IMDB and SST-2 have different column names for text
+        if "sst2" in dataset_name.lower():
             self.texts = data_split['sentence']
             self.labels = data_split['label']
-        elif dataset_name == "imdb":
+        elif "imdb" in dataset_name.lower():
             self.texts = data_split['text']
             self.labels = data_split['label']
         else:
-            raise ValueError(f"Unknown dataset: {dataset_name}")
+            raise ValueError(f"Unknown dataset format: {dataset_name}")
 
     def __len__(self): return len(self.texts)
 
@@ -66,18 +67,34 @@ class NeuroSymbolicDataset(Dataset):
 def get_dataloaders(config, tokenizer, sym_module, knowledge_type, dataset_name):
     logging.info(f"Loading dataset: {dataset_name}...")
     
-    # Handling Dataset Loading
+    # ----------------------------------------------------------------
+    # DATASET LOADING LOGIC (Updated for stanfordnlp/imdb)
+    # ----------------------------------------------------------------
     if dataset_name == "sst2":
         dataset = load_dataset("stanfordnlp/sst2")
         train_split = dataset['train']
         val_split = dataset['validation']
         max_len = config.MAX_LEN_SST2
+        
     elif dataset_name == "imdb":
-        dataset = load_dataset("imdb")
+        # Using the specific ID as requested
+        # 'stanfordnlp/imdb' typically maps to the canonical 'imdb' on HF
+        try:
+            dataset = load_dataset("stanfordnlp/imdb")
+        except:
+            # Fallback if the specific ID has issues, use canonical
+            logging.warning("Could not load 'stanfordnlp/imdb', falling back to 'imdb'")
+            dataset = load_dataset("imdb")
+            
         train_split = dataset['train']
+        # IMDB has 'test' split (25k) which we use for validation in this study
         val_split = dataset['test'] 
         max_len = config.MAX_LEN_IMDB
     
+    else:
+        raise ValueError("Invalid dataset name in scenario config.")
+    
+    # Create Datasets
     train_ds = NeuroSymbolicDataset(
         dataset_name, train_split, tokenizer, max_len, sym_module, knowledge_type
     )
@@ -85,6 +102,7 @@ def get_dataloaders(config, tokenizer, sym_module, knowledge_type, dataset_name)
         dataset_name, val_split, tokenizer, max_len, sym_module, knowledge_type
     )
     
+    # Create DataLoaders
     train_loader = DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_ds, batch_size=config.BATCH_SIZE, shuffle=False)
     
