@@ -1,16 +1,12 @@
-import json
-import os
 import time
 import logging
-import sys
-from tqdm import tqdm
-from datasets import load_dataset
 import requests
 import numpy as np
-
-# Import Config and Module
-from config import Config
-from knowledge_modules import ConceptNetModule
+from tqdm import tqdm
+import os, sys, time, json
+from datasets import load_dataset
+from .config import Config
+from .knowledge_modules import ConceptNetModule
 
 # Setup simple logging
 logging.basicConfig(

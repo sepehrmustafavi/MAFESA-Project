@@ -1,7 +1,7 @@
 import torch
+import logging
 import torch.nn as nn
 from transformers import AutoModel, AutoConfig
-import logging
 
 class NeuroSymbolicBase(nn.Module):
     def __init__(self, model_name, n_classes=2):
