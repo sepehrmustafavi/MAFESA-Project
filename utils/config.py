@@ -1,28 +1,31 @@
 import torch
 
 class Config:
+    # ---------------------------------------------------------
+    # 1. General Settings
+    # ---------------------------------------------------------
     PROJECT_NAME = "MAFESA_Experiment"
     DATASET_NAME = "stanfordnlp/sst2"
     RANDOM_STATE = 42
     
-    # Target GPU server
+    # ---------------------------------------------------------
+    # 2. GPU SETTINGS
+    # ---------------------------------------------------------
     TARGET_GPU_ID = 7
     
-    # Logic to select the specific GPU safely
     if torch.cuda.is_available():
-        device_str = f"cuda:{TARGET_GPU_ID}"
+        DEVICE = torch.device(f"cuda:{TARGET_GPU_ID}")
         try:
-            dummy = torch.tensor([1]).to(device_str)
-            DEVICE = torch.device(device_str)
-            print(f"--> Using GPU: {torch.cuda.get_device_name(DEVICE)} (ID: {TARGET_GPU_ID})")
-        except Exception as e:
-            print(f"Warning: GPU {TARGET_GPU_ID} not found or error occurred: {e}")
-            print("--> Switching to default cuda:0")
+            _ = torch.tensor([1]).to(DEVICE)
+        except:
+            print(f"Warning: GPU {TARGET_GPU_ID} not found. Switching to default cuda:0")
             DEVICE = torch.device("cuda:0")
     else:
         DEVICE = torch.device("cpu")
-        print("--> Using CPU")
     
+    # ---------------------------------------------------------
+    # 3. Paths & Hyperparameters
+    # ---------------------------------------------------------
     CACHE_PATH = "conceptnet_cache.json"
     LOG_FILE = "experiment_logs.txt"
     RESULTS_FILE = "final_results.json"
@@ -31,10 +34,13 @@ class Config:
     EPOCHS = 4           
     LEARNING_RATE = 2e-5 
     
-    # Token Lengths
     MAX_LEN_SST2 = 128
-    MAX_LEN_IMDB = 256   # IMDB reviews are longer
+    MAX_LEN_IMDB = 256   
     
+    # ---------------------------------------------------------
+    # 4. Scenarios List
+    # Format: (ID, Model, Arch, Strategy, Knowledge, DATASET_NAME)
+    # ---------------------------------------------------------
     SCENARIOS = [
         # --- SST-2 Experiments (Main Study) ---
         (1, "google-bert/bert-base-uncased", "bert", "static", "senticnet", "sst2"),
@@ -50,6 +56,7 @@ class Config:
         (11, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "conceptnet", "sst2"),
 
         # --- IMDB Experiments (Robustness Check) ---
-        (12, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "senticnet", "imdb"),
-        (13, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "conceptnet", "imdb")
+        # Comparing Static vs Flexible on a Harder Dataset
+        (12, "Qwen/Qwen2-1.5B", "qwen2", "static", "senticnet", "imdb"),   # <--- NEW: Static Benchmark
+        (13, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "senticnet", "imdb")  # <--- NEW: Flexible (Expected Winner)
     ]
