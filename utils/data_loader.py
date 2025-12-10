@@ -103,7 +103,7 @@ def get_dataloaders(config, tokenizer, sym_module, knowledge_type, dataset_name)
     )
     
     # Create DataLoaders
-    train_loader = DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=2)
-    val_loader = DataLoader(val_ds, batch_size=config.BATCH_SIZE, shuffle=False)
+    train_loader = DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=0)
+    val_loader = DataLoader(val_ds, batch_size=config.BATCH_SIZE, shuffle=False, num_workers=0)
     
     return train_loader, val_loader, max_len

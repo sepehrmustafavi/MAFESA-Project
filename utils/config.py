@@ -43,16 +43,16 @@ class Config:
     # ---------------------------------------------------------
     SCENARIOS = [
         # --- SST-2 Experiments (Main Study) ---
-        (1, "google-bert/bert-base-uncased", "bert", "static", "senticnet", "sst2"),
-        (2, "google-bert/bert-base-uncased", "bert", "flexible", "senticnet", "sst2"),
-        (3, "FacebookAI/roberta-base", "roberta", "static", "senticnet", "sst2"),
-        (4, "FacebookAI/roberta-base", "roberta", "flexible", "senticnet", "sst2"),
-        (5, "Qwen/Qwen2-0.5B", "qwen2", "static", "senticnet", "sst2"),
-        (6, "Qwen/Qwen2-0.5B", "qwen2", "flexible", "senticnet", "sst2"),
-        (7, "Qwen/Qwen2-1.5B", "qwen2", "static", "senticnet", "sst2"),
-        (8, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "senticnet", "sst2"),
-        (9, "openai-community/gpt2-large", "gpt2", "static", "senticnet", "sst2"),
-        (10, "openai-community/gpt2-large", "gpt2", "flexible", "senticnet", "sst2"),
+        #(1, "google-bert/bert-base-uncased", "bert", "static", "senticnet", "sst2"),
+        #(2, "google-bert/bert-base-uncased", "bert", "flexible", "senticnet", "sst2"),
+        #(3, "FacebookAI/roberta-base", "roberta", "static", "senticnet", "sst2"),
+        #(4, "FacebookAI/roberta-base", "roberta", "flexible", "senticnet", "sst2"),
+        #(5, "Qwen/Qwen2-0.5B", "qwen2", "static", "senticnet", "sst2"),
+        #(6, "Qwen/Qwen2-0.5B", "qwen2", "flexible", "senticnet", "sst2"),
+        #(7, "Qwen/Qwen2-1.5B", "qwen2", "static", "senticnet", "sst2"),
+        #(8, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "senticnet", "sst2"),
+        #(9, "openai-community/gpt2-large", "gpt2", "static", "senticnet", "sst2"),
+        #(10, "openai-community/gpt2-large", "gpt2", "flexible", "senticnet", "sst2"),
         (11, "Qwen/Qwen2-1.5B", "qwen2", "flexible", "conceptnet", "sst2"),
 
         # --- IMDB Experiments (Robustness Check) ---
