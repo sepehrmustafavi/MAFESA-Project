@@ -5,8 +5,8 @@ import numpy as np
 from tqdm import tqdm
 import os, sys, time, json
 from datasets import load_dataset
-from .config import Config
-from .knowledge_modules import ConceptNetModule
+from config import Config
+from knowledge_modules import ConceptNetModule
 
 # Setup simple logging
 logging.basicConfig(
@@ -20,7 +20,7 @@ def build_cache():
     
     # 1. Load Full Dataset (Train + Validation) to find ALL unique words
     dataset = load_dataset(Config.DATASET_NAME)
-    all_sentences = dataset['train']['sentence'] + dataset['validation']['sentence']
+    all_sentences = list(dataset['train']['sentence']) + list(dataset['validation']['sentence'])
     logging.info(f"Total sentences to process: {len(all_sentences)}")
 
     # 2. Initialize Module (loads existing cache if any)
