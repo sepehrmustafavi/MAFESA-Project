@@ -7,11 +7,13 @@ from sentence_transformers import SentenceTransformer, util
 class XAIEngine:
     def __init__(self, device):
         self.device = device
-        try:
-            self.sbert = SentenceTransformer('all-MiniLM-L6-v2', device=device)
-        except:
-            logging.warning("SBERT load failed. Cosine Similarity will be 0.")
-            self.sbert = None
+        self.sbert = None
+        #logging.info("SBERT loading skipped manually. Cosine Similarity will be 0.")
+        #try:
+            #self.sbert = SentenceTransformer('all-MiniLM-L6-v2', device=device)
+        #except:
+            #logging.warning("SBERT load failed. Cosine Similarity will be 0.")
+            #self.sbert = None
 
     def get_prob(self, model, tokenizer, text, symbolic_polarity, max_len, target_class):
         """ Helper to get probability of a specific class for a text """

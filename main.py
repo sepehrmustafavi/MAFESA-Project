@@ -5,17 +5,18 @@ import json
 import torch
 import logging
 import numpy as np
+import os
 from tqdm import tqdm
 from torch.optim import AdamW
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-
 from utils.config import Config
 from utils.knowledge_modules import SymbolicModuleSenticNet, ConceptNetModule
 from utils.model_architectures import NeuroSymbolicEncoder, NeuroSymbolicCausalLM, apply_tada
 from utils.data_loader import get_dataloaders
 from utils.xai_engine import XAIEngine
 
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 # 1. Setup Logging
 logging.basicConfig(
     level=logging.INFO,
